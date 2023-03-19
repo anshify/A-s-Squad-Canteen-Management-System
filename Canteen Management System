@@ -1,0 +1,646 @@
+#include<iostream>
+#include<istream>
+#include<fstream>
+#include<stdlib.h>
+#include<string.h>
+#include <string>
+#include <vector>
+using namespace std;
+void menu();
+void inventory();
+void custoManage();
+int main();
+struct Customer {
+    string name;
+    int ContactNum;
+};
+
+// Function for adding a new customer to the list
+void addCustomer(vector<Customer>& customers) {
+    string name;
+    int ContactNum;
+    cout << "Enter customer name: ";
+    getline(cin, name);
+    cout << "Enter contact number: ";
+    cin >> ContactNum;
+    cin.ignore(); // Ignore the newline character left in the input buffer
+    customers.push_back({name, ContactNum}); // Add customer to the vector
+    cout << "Customer added successfully." << endl;
+}
+
+// Function for removing a customer from the list
+void removeCustomer(vector<Customer>& customers) {
+    int ContactNum;
+    cout << "Enter contact number: ";
+    cin >> ContactNum;
+    cin.ignore(); // Ignore the newline character left in the input buffer
+    for (auto it = customers.begin(); it != customers.end(); ++it) {
+        if (it->ContactNum == ContactNum) {
+            customers.erase(it); // Remove customer from the vector
+            cout << "Customer removed successfully." << endl;
+            return;
+        }
+    }
+    cout << "No customer found with this contact number " << ContactNum << "." << endl;
+    int option;
+                cout<<"1. menu"<<endl;
+                cout<<"2. check Inventory"<<endl;
+                cout<<"3. Login Page"<<endl;
+                cout<<"4. Customer Management System"<<endl;
+                cin>>option;
+                switch(option)
+                {
+                    case 1:
+                       menu();
+                       break;
+                    case 2:
+                       inventory();
+                       break;
+                    case 3:
+                       main();
+                       break;
+                    case 4:
+                       custoManage();
+                       break;  
+                    default:
+                       main();
+                       break;
+                }
+}
+
+// Function for displaying the list of customers
+void displayCustomers(vector<Customer>& customers) {
+    cout << "Customer List:" << endl;
+    for (auto& customer : customers) {
+        cout << customer.name << " (customer contact number " << customer.ContactNum << ")" << endl;
+    }
+}
+void menu();
+int main();
+void inventory();
+void custoManage()
+{
+    vector<Customer> customers;
+    int choice;
+    do {
+        cout << "Customer Management System" << endl;
+        cout << "------------------------" << endl;
+        cout << "1. Add Customer" << endl;
+        cout << "2. Remove Customer" << endl;
+        cout << "3. Display Customer List" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter choice: ";
+        cin >> choice;
+        cin.ignore(); // Ignore the newline character left in the input buffer
+        switch (choice) {
+            case 1:
+                addCustomer(customers);
+                break;
+            case 2:
+                removeCustomer(customers);
+                break;
+            case 3:
+                displayCustomers(customers);
+                break;
+            case 4:
+                cout << "Exiting program..." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+                break;
+        }
+        cout << endl;
+    } while (choice != 4);
+}
+struct itemEntry 
+{
+ float unitPrice;
+ int copies, product_id;
+ char name[30];
+ 
+};
+class Store 
+{
+public:
+ int numItem;
+ itemEntry database[100];
+
+ Store()
+ {
+  numItem = 0;
+ }
+ void insertItem(char itemName[],  int pid, int c, float p);
+ void deleteItem(char itemName[], int pid);
+ itemEntry *searchi(char itemName[], int pid);
+ void updateItem(char itemName[], int pid,int total,float price);
+};
+
+
+void Store::insertItem(char itemName[], int pid, int c, float p) 
+{
+ strcpy(database[numItem].name, itemName);
+ database[numItem].product_id = pid;
+ database[numItem].copies = c;
+ database[numItem].unitPrice = p;
+ cout << "\n\t\t ITEM INSERTED SUCCESFULLY\n";
+ numItem++;
+
+}
+
+void Store::deleteItem(char itemName[], int pid)
+{
+ int i;
+ for (i = 0; i < numItem; i++)
+ {
+  if ((strcmp(itemName, database[i].name) == 0) && (database[i].product_id == pid))
+  {
+   database[i].copies--;
+   cout<< "\n\t\t ITEM DELETED SUCCESFULLY\n";
+   return;
+
+  }
+ }
+ cout << "\n\t\t ITEM NOT FOUND\n";
+}
+itemEntry *Store::searchi(char itemName[], int pid) 
+{
+ int i;
+ for (i = 0; i < numItem; i++)
+ {
+  if ((strcmp(itemName, database[i].name) == 0) && (database[i].product_id == pid))
+   return &database[i];
+ }
+ return NULL;
+}
+void Store::updateItem(char itemName[], int pid, int total, float price) 
+{
+ itemEntry *item = searchi(itemName, pid);
+ if (item == NULL)
+ {
+  cout << "\n\t\t ITEM NOT FOUND\n";
+  return;
+  item->copies += total;
+  item->unitPrice += price;
+ }
+}
+
+void inventory()
+{
+ Store sto;
+ char name[30];
+ int product_id, copies, unit_price,option;
+
+ do 
+ {
+  cout << "\n\t------------->CANTEEN INVENTORY<--------------";
+  cout << "\n\t\t-------------->MENU<------------";
+  cout << "\n\t\t\t    1 FOR INSERT";
+  cout << "\n\t\t\t    2 FOR DELETE";
+  cout << "\n\t\t\t    3 FOR SEARCH";
+  cout << "\n\t\t\t    4 FOR UPDATE";
+  cout << "\n\t\t\t    5 FOR EXIT";
+  cout << "\n\t\t  ENTER YOUR CHOICE : ";
+  cin >> option;
+  switch (option)
+  {
+  case 1: cin.getline(name, 80);
+    cout << "\n\t\t\t ENTER NAME OF ITEM : ";
+    cin.getline(name, 80);
+    cout << "\n\t\t\t ENTER PRODUCT ID : ";
+    cin >> product_id;
+    cout << "\n\t\t\t QUANTITY : ";
+    cin >> copies;
+    cout << "\n\t\t\t UNIT PRICE PER ITEM : ";
+    cin >> unit_price;
+    sto.insertItem(name, product_id, copies, unit_price);
+    break;
+  case 2: cin.getline(name, 80);
+    cout << "\n\t\t\t ENTER NAME OF ITEM : ";
+    cin.getline(name, 80);
+    cout << "\n\t\t\t ENTER PRODUCT ID : ";
+    cin >> product_id;
+    sto.deleteItem(name, product_id);
+  case 3: cin.getline(name, 80);
+    cout << "\n\t\t\t ENTER NAME OF ITEM : ";
+    cin.getline(name, 80);
+    cout << "\n\t\t\t ENTER PRODUCT ID : ";
+    cin >> product_id;
+    itemEntry *test;
+    test = sto.searchi(name, product_id);
+    if (test != NULL) 
+    {
+     cout << "\n\t------------->SEARCHING RESULT<--------------";
+     cout << "\n\t\t\t   ITEM FOUND" << "\n\t\t\t NAME OF THE ITEM:" << test->name << "\n\t\t\t PRODUCT ID:" << test->product_id
+      << "\n\t\t\t QUANTITY AVAILABLE:" << test->copies
+      << "\n\t\t\t UNIT PRICES PER ITEM:" << test->unitPrice;
+    }
+    else 
+     cout << "\n\t\t\t ITEM NOT FOUND";
+    break;
+  case 4: cout << "\n\t\t\t ENTER DETAILS FOR UPDATE : ";
+    cin.getline(name, 80);
+    cout << "\n\t\t\t ENTER NAME OF ITEM : ";
+    cin.getline(name, 80);
+    cout << "\n\t\t\t ENTER PRODUCT ID : ";
+    cin >> product_id;
+    cout << "\n\t\t\t ENTER TOTAL NEW ENTRY : ";
+    cin >> copies;
+    cout << "\n\t\t\t ENTER NEW PRICE : ";
+    cin >> unit_price;
+    sto.updateItem(name, product_id, copies, unit_price);
+    break;
+  }
+ } while (option != 5);
+}
+void menu()
+{
+    float jum;
+        int n;
+        int qty[14];
+        int no[14];
+        long price[14], tot[14];
+        string name[14];
+        float change, pay;
+    cout<<"--------------->Tiwari's Canteen<------------"<<endl;
+    cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+    cout<<"No.     ITEMS           PRICE"<<endl;
+    cout<<"1.      Spring roll     50   "<<endl;
+    cout<<"2.      Veg roll        50   "<<endl;
+    cout<<"3.      Momos           50   "<<endl;
+    cout<<"4.      Maggi           35   "<<endl;
+    cout<<"5.      Burger          35   "<<endl;
+    cout<<"6.      Patties         15   "<<endl;
+    cout<<"7.      Paneer Kulcha   35   "<<endl;
+    cout<<"8.      Sandwich        20   "<<endl;
+    cout<<"9.      Chips           20   "<<endl;
+    cout<<"10.     Kurkure         20   "<<endl;
+    cout<<"11.     Biscuits        10   "<<endl;
+    cout<<"12.     Tea             10   "<<endl;
+    cout<<"13.     Coffee          20   "<<endl;
+    cout<<"14.     Cold Drink      20   "<<endl;
+    cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"<<endl;
+    cout<<"How many items do you want to order? : ";cin>>n;
+    if (n>0 && n<=14)
+    {
+        for (int i=0; i<n;i++)
+        {
+            cout<<"Enter your choice "<<i+1<<"=";
+            cin>>no[i];
+            cout<<"Enter Quantity = ";cin>>qty[i];
+            if (no[i]==1)
+            {
+                name[i]=="Spring roll";
+                price[i]=50;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==2)
+            {
+                name[i]="Veg roll";
+                price[i]=50;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==3)
+            {
+                name[i]="Momos";
+                price[i]=50;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==4)
+            {
+                name[i]="Maggi";
+                price[i]=35;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==5)
+            {
+                name[i]="Burger";
+                price[i]=35;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==6)
+            {
+                name[i]="Patties";
+                price[i]=15;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==7)
+            {
+                name[i]="Paneer Kulcha";
+                price[i]=35;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==8)
+            {
+                name[i]="Sandwich";
+                price[i]=20;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==9)
+            {
+                name[i]="Chips";
+                price[i]=20;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==10)
+            {
+                name[i]="Kurkure";
+                price[i]=20;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==11)
+            {
+                name[i]="Biscuits";
+                price[i]=10;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==12)
+            {
+                name[i]="Tea";
+                price[i]=10;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==13)
+            {
+                name[i]="Coffee";
+                price[i]=20;
+                tot[i]=price[i]*qty[i];
+            }
+            else if (no[i]==13)
+            {
+                name[i]="Cold Drink";
+                price[i]=20;
+                tot[i]=price[i]*qty[i];
+            }
+            jum=jum+tot[i];
+        }
+        cout<<"Your Choice is : "<<endl;
+        for(int i=0;i<n;i++)
+        {
+            cout<<""<<qty[i]<<"Plate"<<""<<name[i]<<endl;
+            cout<<"Price/Plate = :"<<price[i]<<endl;
+            cout<<"Total Price "<<name[i]<<"="<<tot[i]<<endl;
+        }
+        cout<<"Total amount to be paid: "<<jum;
+        cout<<endl;
+        cout<<"Paid : Rp. ";
+        cin>>pay;
+        change = pay - jum ;
+        cout<<"Change : Rp. "<<change<<endl;
+        cout<<"Thank you for visiting our Canteen:)"<<endl;
+        }
+        else
+        cout<<"Code you input doesn't exist";
+        int option;
+                cout<<"1. menu"<<endl;
+                cout<<"2. check Inventory"<<endl;
+                cout<<"3. Login Page"<<endl;
+                cout<<"4. Customer Management System"<<endl;
+                cin>>option;
+                switch(option)
+                {
+                    case 1:
+                       menu();
+                       break;
+                    case 2:
+                       inventory();
+                       break;
+                    case 3:
+                       main();
+                       break;
+                    case 4:
+                       custoManage();
+                       break;
+                    default:
+                       main();
+                       break;
+                }
+
+}
+
+void login();
+void registr();
+void forgot();
+
+int main()
+{
+        int choice;
+        cout<<"*******************************************\n\n\n";
+        cout<<"---------->WELCOME TO LOGIN PAGE<----------\n";
+        cout<<"       ~~~~~~~~~~~~~MENU~~~~~~~~~~~~\n\n";
+        cout<<"1.LOGIN"<<endl;
+        cout<<"2.REGISTER"<<endl;
+        cout<<"3.FORGOT PASSWORD (or) USERNAME"<<endl;
+        cout<<"4.EXIT"<<endl;
+        cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+        cout<<"\nEnter your choice :";
+        cin>>choice;
+        cout<<endl;
+        switch(choice)
+        {
+                case 1:
+                        login();
+                        break;
+                case 2:
+                        registr();
+                        break;
+                case 3:
+                        forgot();
+                        break;
+                case 4:
+
+                        cout<<"Thanks for visiting our canteen(:-D)";
+                        break;
+                default:
+                        system("cls");
+                        cout<<"You've made a mistake , Try again..\n"<<endl;
+                        main();
+        }
+
+}
+
+void login()
+{
+        int count;
+        string user,pass,u,p;
+        cout<<"Please enter the following details:"<<endl;
+        cout<<"USERNAME :";
+        cin>>user;
+        cout<<"PASSWORD :";
+        cin>>pass;
+
+        ifstream input("database.txt");
+        while(input>>u>>p)
+        {
+                if(u==user && p==pass)
+
+                {
+                        count=1;
+                        
+                }
+        }
+        input.close();
+        if(count==1)
+        {
+                cout<<"\nHello "<<user<<"\n<LOGIN SUCCESSFUL>\nThanks for logging in..\n";
+                cin.get();
+                cin.get();
+                int option;
+                cout<<"1. menu"<<endl;
+                cout<<"2. check Inventory"<<endl;
+                cout<<"3. Customer Management System"<<endl;
+                cin>>option;
+                switch(option)
+                {
+                    case 1:
+                       menu();
+                       break;
+                    case 2:
+                       inventory();
+                       break;
+                    case 3:
+                       custoManage();
+                    default:
+                       main();
+                       break;
+                }
+        }
+        else
+        {
+                cout<<"\nLOGIN ERROR\nPlease check your username and password\n";
+                main();
+        }
+}
+
+void registr()
+{
+
+        string reguser,regpass,ru,rp;
+        cout<<"Enter the username :";
+        cin>>reguser;
+        cout<<"\nEnter the password :";
+        cin>>regpass;
+
+        ofstream reg("database.txt",ios::app);
+        reg<<reguser<<' '<<regpass<<endl;
+        cout<<"\nRegistration Successfull!\n";
+        int option;
+                cout<<"1. Menu"<<endl;
+                cout<<"2. Check Inventory"<<endl;
+                cout<<"3. Customer Management system"<<endl;
+                cout<<"4. login page"<<endl;
+                cin>>option;
+                switch(option)
+                {
+                    case 1:
+                       menu();
+                       break;
+                    case 2:
+                       inventory();
+                       break;
+                    case 3:
+                       custoManage();
+                       break;
+                    case 4:
+                       main();
+                       break;
+                    default:
+                       main();
+                       break;
+                }
+
+}
+
+void forgot()
+{
+        int ch;
+        system("cls");
+        cout<<"Forgotten ? We're here for help\n";
+        cout<<"1.Search your id by username"<<endl;
+        cout<<"2.Search your id by password"<<endl;
+        cout<<"3.Main menu"<<endl;
+        cout<<"Enter your choice :";
+        cin>>ch;
+        switch(ch)
+        {
+                case 1:
+                {
+                        int count=0;
+                        string searchuser,su,sp;
+                        cout<<"\nEnter your remembered username :";
+                        cin>>searchuser;
+
+                        ifstream searchu("database.txt");
+                        while(searchu>>su>>sp)
+                        {
+                                if(su==searchuser)
+                                {
+                                        count=1;
+                                }
+                        }
+                        searchu.close();
+                        if(count==1)
+                        {
+                                cout<<"\n\nHurray, account found\n";
+                                cout<<"\nYour password is "<<sp;
+                                cin.get();
+                                cin.get();
+                                system("cls");
+                                main();
+                        }
+                        else
+                        {
+                                cout<<"\nSorry, Your userID is not found in our database\n";
+                                cout<<"\nPlease kindly contact your system administrator for more details \n";
+                                cin.get();
+                                cin.get();
+                                main();
+                        }
+                        break;
+                }
+                case 2:
+                {
+                        int count=0;
+                        string searchpass,su2,sp2;
+                        cout<<"\nEnter the remembered password :";
+                        cin>>searchpass;
+
+                        ifstream searchp("database.txt");
+                        while(searchp>>su2>>sp2)
+                        {
+                                if(sp2==searchpass)
+                                {
+                                        count=1;
+                                }
+                        }
+                        searchp.close();
+                        if(count==1)
+                        {
+                                cout<<"\nYour password is found in the database \n";
+                                cout<<"\nYour Id is : "<<su2;
+                                cin.get();
+                                cin.get();
+                                system("cls");
+                                main();
+                        }
+                        else
+                        {
+                                cout<<"Sorry, We cannot found your password in our database \n";
+                                cout<<"\nkindly contact your administrator for more information\n";
+                                cin.get();
+                                cin.get();
+                                main();
+                        }
+
+                        break;
+                }
+
+                case 3:
+                {
+                        cin.get();
+                        main();
+                }
+                default:
+                        cout<<"Sorry, You entered wrong choice. Kindly try again"<<endl;
+                        forgot();
+        }
+}
