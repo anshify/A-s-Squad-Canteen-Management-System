@@ -18,6 +18,6 @@ Customer Management: The Canteen staff can manage their customer details which'l
 
 **Our Experience:**
 
-It was a wonderful experience to be a part of this hackathon.This being our first hackathon taught us a way more than what we could achieve by self learning.Overall it was fun to develop a project in a team wherein we all work hard to meet the deadline and also enjoy each other's company during the entire period of development.
+It was a wonderful experience to be a part of this hackathon.This being our first hackathon taught us a way more than what we could achieve by self learning because of getting mentorship from time to time.Overall it was fun to develop a project in a team wherein we all work hard to meet the deadline and also enjoy each other's company during the entire period of development.
 
-Thank you for considering our project!
+**Thank you for considering our project!**
