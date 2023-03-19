@@ -103,7 +103,30 @@ void custoManage()
                 displayCustomers(customers);
                 break;
             case 4:
-                cout << "Exiting program..." << endl;
+                int option;
+                cout<<"1. menu"<<endl;
+                cout<<"2. check Inventory"<<endl;
+                cout<<"3. Login Page"<<endl;
+                cout<<"4. Customer Management System"<<endl;
+                cin>>option;
+                switch(option)
+                {
+                    case 1:
+                       menu();
+                       break;
+                    case 2:
+                       inventory();
+                       break;
+                    case 3:
+                       main();
+                       break;
+                    case 4:
+                       custoManage();
+                       break;  
+                    default:
+                       main();
+                       break;
+                }
                 break;
             default:
                 cout << "Invalid choice. Please try again." << endl;
@@ -248,9 +271,12 @@ void inventory()
     cout << "\n\t\t\t ENTER NEW PRICE : ";
     cin >> unit_price;
     sto.updateItem(name, product_id, copies, unit_price);
+    
     break;
   }
+  
  } while (option != 5);
+ 
 }
 void menu()
 {
@@ -581,7 +607,7 @@ void forgot()
                         if(count==1)
                         {
                                 cout<<"\n\nHurray, account found\n";
-                                cout<<"\nYour password is "<<sp;
+                                cout<<"\nYour password is "<<su;
                                 cin.get();
                                 cin.get();
                                 system("cls");
